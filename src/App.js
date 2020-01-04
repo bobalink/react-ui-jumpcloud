@@ -1,26 +1,47 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { Component } from 'react';
 import './App.css';
+import UserService from './services/UserService';
+class App extends Component {
+  constructor(props) {
+    super(props);
+    this.UserService =  new UserService;
+    this.state = {
+    }
+  }
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  componentDidMount() {
+    console.log('comp mounted');
+    this.getUsers();
+  }
+
+  render () {
+    const users =  this.state.users || [];
+    const usersList = users.map((user) =>
+      <li key={user.id} onClick={() => this.onSelect(user.link)}>
+        <span className="User info ">
+          Display Name: {user.displayname } - First Name: {user.firstName} - Last Name: {user.lastName} - Email: {user.email}
+         </span>
+      </li>
+    );
+    console.log('listed users', usersList);
+
+    return (
+      <div className="App">
+        hello world
+        <ul className="Users">
+          {usersList}
+        </ul>
+      </div>
+    );
+  }
+
+  getUsers() {
+    console.log('in get users');
+    this.UserService.listUsers().then(Users => {
+        console.log('users in getUsers return ', Users);
+        this.setState({users: Users});
+      }
+    );
+  }
 }
-
 export default App;
