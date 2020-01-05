@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
 import './App.css';
 import UserService from './services/UserService';
-import User from './Component/user';
+import User from './Component/User';
+import UserList from './Component/UserList';
+import Button from '@material-ui/core/Button';
+import Container from '@material-ui/core/Container';
+import Box from '@material-ui/core/Box';
 class App extends Component {
   constructor(props) {
     super(props);
@@ -12,6 +16,7 @@ class App extends Component {
     this.onCreateUser = this.onCreateUser.bind(this);
     this.onUpdateUser = this.onUpdateUser.bind(this);
     this.onDeleteUser = this.onDeleteUser.bind(this);
+    this.clearState = this.clearState.bind(this);
     this.state = {
       selectedUser: null,
       newUser: null,
@@ -23,25 +28,19 @@ class App extends Component {
   }
 
   render () {
-    const users =  this.state.users || [];
-    const usersList = users.map((user) =>
-      <li key={user.id} onClick={() => this.onSelect(user.id)}>
-        <span className="User info ">
-          User Name: {user.username}  -  Display Name: {user.displayname } - First Name: {user.firstname} - Last Name: {user.lastname} - Email: {user.email}
-         </span>
-      </li>
-    );
     return (
-      <div className="App">
-        <ul className="Users">
-          {usersList}
-        </ul>
-        <br/>
-        <button type="button" name="button" onClick={() => this.onNewUser()}>New User</button>
-        <br/>
-        {this.state.newUser && <User onSubmit={this.onCreateUser} onCancel={this.onCancel}/>}
-        {this.state.selectedUser && <User user={this.state.selectedUser} onSubmit={this.onUpdateUser} onDelete={this.onDeleteUser} onCancel={this.onCancel}/>}
-      </div>
+      <Container className="App">
+        <Box className="Users Page">
+          <UserList users={this.state.users} onSelect={(user) => this.onSelect(user.id)}> </UserList>
+          <br/>
+          <Button name="button" variant="contained" color="primary" onClick={() => this.onNewUser()}>New User</Button>
+          <br/>
+        </Box>
+        <Box className="SpecificUserPage">
+          {this.state.newUser && <User onSubmit={this.onCreateUser} onCancel={this.onCancel}/>}
+          {this.state.selectedUser && <User user={this.state.selectedUser} onSubmit={this.onUpdateUser} onDelete={this.onDeleteUser} onCancel={this.onCancel}/>}
+        </Box>
+      </Container>
     );
   }
 
@@ -98,7 +97,7 @@ class App extends Component {
     this.setState({
       selectedUser: null,
       newUser: null
-    });
+  });
   }
 }
 export default App;
