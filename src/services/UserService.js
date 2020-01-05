@@ -20,26 +20,83 @@ class UserService {
     }
   }
 
-  async getUser(UserLink) {
-    for(var i = 0; i < this.users.length; i++) {
-      if ( this.users[i].link === UserLink) {
-        return Promise.resolve(this.users[i]);
+  async getUser(UserId) {
+    try{
+      console.log('UserService.getUser():', UserId);
+      // const url = new URL('http://localhost:8005/api/systemusers');
+      const res = await fetch('http://localhost:8005/api/systemusers/'+ UserId);
+      const json = await res.json();
+      console.log('got the json', json);
+      console.log('got the json', typeof json);
+      return json;
+    }
+    catch (e) {
+      console.log('hit error', e);
+    }
+  }
+
+  async createUser(user) {
+    console.log('UserService.createUser():', user);
+    try{
+      const res = await fetch('http://localhost:8005/api/systemusers', {
+        method: 'post',
+        body:    JSON.stringify(user),
+        headers: { 'Content-Type': 'application/json', 'Accept' : 'application/json'}
+      });
+      if(res.ok) {
+        console.log('created user', user);
+        return user;
+      }
+      else {
+        throw new Error('failed to create user');
       }
     }
-    return null;
+    catch(e) {
+      console.log("wahhh", e);
+      throw new Error('failed to create user')
+    }
   }
-  async createUser(User) {
-    console.log('UserService.createUser():');
-    console.log(User);
-    return Promise.resolve(User);
+
+  async deleteUser(user) {
+    console.log('UserService.deleteUser():', user);
+    try{
+      const res = await fetch('http://localhost:8005/api/systemusers/'+ user.id, {
+        method: 'delete',
+        headers: { 'Content-Type': 'application/json', 'Accept' : 'application/json'}
+      });
+      if(res.ok) {
+        console.log('deleted user', user);
+        return user;
+      }
+      else {
+        throw new Error('failed to delete user');
+      }
+    }
+    catch(e) {
+      console.log("wahhh", e);
+      throw new Error('failed to delete user')
+    }
   }
-  async deleteUser(UserId) {
-    console.log('UserService.deleteUser():');
-    console.log('User ID:' + UserId);
-  }
-  async updateUser(User) {
-    console.log('UserService.updateUser():');
-    console.log(User);
+  async updateUser(user) {
+    console.log('UserService.updateUser():', user);
+    try{
+      const res = await fetch('http://localhost:8005/api/systemusers/'+ user.id, {
+        method: 'put',
+        body:    JSON.stringify(user),
+        headers: { 'Content-Type': 'application/json', 'Accept' : 'application/json'}
+      });
+      if(res.ok) {
+        console.log('updated user', user);
+        return user;
+      }
+      else {
+        throw new Error('failed to update user');
+      }
+    }
+    catch(e) {
+      console.log("wahhh", e);
+      throw new Error('failed to update user')
+    }
   }
 }
 export default UserService;
