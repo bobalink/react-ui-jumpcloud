@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import '../App.css';
+import './Users.css'
 import Container from '@material-ui/core/Container';
 import Card from '@material-ui/core/Card';
-import Input from '@material-ui/core/Input';
 import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
-
-import Typography from '@material-ui/core/Typography';
+import TextField from '@material-ui/core/TextField'
 
 class User extends Component {
   constructor(props) {
@@ -38,9 +37,9 @@ class User extends Component {
     this.props.onDelete(this.state.user)
   }
   render() {
+
     const selectedUser = this.props.user;
     const createOrUpdate = selectedUser ? 'Update' : 'Create';
-    const newOrEdit = selectedUser ? 'New User' : 'Edit User';
     const deleteButton = selectedUser ? <Button onClick={() => this.onDelete()}>Delete</Button> : null;
 
     const buttonSpan = <ButtonGroup variant="contained" color="primary">
@@ -50,24 +49,17 @@ class User extends Component {
     </ButtonGroup>;
 
     return (
-      <Card className="User-Edit">
-        <Container maxWidth="sm">
-        <Typography className="Title">{newOrEdit}</Typography>
-        <Typography className="field-name">User Name:<br/>
-          <Input value={this.state.user.username || ""} name="username" maxLength="40" required onChange={this.handleInputChange} placeholder="User name" />
-        </Typography>
-        <Typography className="field-name">First Name:<br/>
-          <Input value={this.state.user.firstname || ""} name="firstname" maxLength="40" required onChange={this.handleInputChange} placeholder="First Name" />
-        </Typography>
-        <Typography className="field-name">Last Name<br/>
-          <Input value={this.state.user.lastname || ""} name="lastname" maxLength="40" onChange={this.handleInputChange} placeholder="Last Name" />
-        </Typography>
-        <Typography className="field-name">Display Name:<br/>
-          <Input value={this.state.user.displayname || ""} name="displayname" maxLength="" onChange={this.handleInputChange} placeholder="Display Name" />
-        </Typography>
-        <Typography className="field-name">Email :<br/>
-          <Input value={this.state.user.email || ""} name="email" onChange={this.handleInputChange} placeholder="email" />
-        </Typography>
+      <Card >
+        <Container>
+          <Container  >
+            <form className='edit-user'>
+              <TextField className='field' error={0} name="username" label="User Name" value={this.state.user.username || ""} required onChange={this.handleInputChange}/>
+              <TextField className='field' error={0} name="firstname" label="First Name" value={this.state.user.firstname || ""} required onChange={this.handleInputChange}/>
+              <TextField className='field' error={0} name="lastname" label="Last Name" value={this.state.user.lastname || ""} required onChange={this.handleInputChange}/>
+              <TextField error={0} name="displayname" label="Display Name" value={this.state.user.displayname || ""} required onChange={this.handleInputChange}/>
+              <TextField error={0} fullWidth name="email" label="Email" value={this.state.user.email || ""} required onChange={this.handleInputChange}/>
+            </form>
+            </Container>
         <br/>
         {buttonSpan}
         </Container>

@@ -18,6 +18,12 @@
   color: white;
 }
 
+.Container{
+  text-align: center;
+  background-color: #61dafb;
+}
+
+
 .App-link {
   color: #61dafb;
 }

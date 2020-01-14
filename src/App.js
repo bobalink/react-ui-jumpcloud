@@ -5,7 +5,12 @@ import User from './Component/User';
 import UserList from './Component/UserList';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
-import Box from '@material-ui/core/Box';
+import theme from './theme';
+import { palette, spacing, typography } from '@material-ui/system';
+import styled, { ThemeProvider } from 'styled-components';
+
+const Box = styled.div`${palette}${spacing}${typography}`;
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -29,18 +34,25 @@ class App extends Component {
 
   render () {
     return (
-      <Container className="App">
-        <Box className="Users Page">
-          <UserList users={this.state.users} onSelect={(user) => this.onSelect(user.id)}> </UserList>
-          <br/>
-          <Button name="button" variant="contained" color="primary" onClick={() => this.onNewUser()}>New User</Button>
-          <br/>
-        </Box>
-        <Box className="SpecificUserPage">
-          {this.state.newUser && <User onSubmit={this.onCreateUser} onCancel={this.onCancel}/>}
-          {this.state.selectedUser && <User user={this.state.selectedUser} onSubmit={this.onUpdateUser} onDelete={this.onDeleteUser} onCancel={this.onCancel}/>}
-        </Box>
-      </Container>
+      <ThemeProvider theme={theme}>
+        <Container display="flex" className="Container" color="primary.main"
+                   bgcolor=""
+                   fontFamily="h6.fontFamily" theme={theme}>
+          <Box border={4}
+            color="primary.main"
+               bgcolor="background.paper"
+               fontFamily="h6.fontFamily" theme={theme} className="Users Page">
+            <UserList users={this.state.users} onSelect={(user) => this.onSelect(user.id)}> </UserList>
+            <br/>
+            <Button className="new-button" variant="contained" color="primary" onClick={() => this.onNewUser()}>New User</Button>
+            <br/>
+          </Box>
+          <Box className="SpecificUserPage">
+            {this.state.newUser && <User onSubmit={this.onCreateUser} onCancel={this.onCancel}/>}
+            {this.state.selectedUser && <User user={this.state.selectedUser} onSubmit={this.onUpdateUser} onDelete={this.onDeleteUser} onCancel={this.onCancel}/>}
+          </Box>
+        </Container>
+      </ThemeProvider>
     );
   }
 
